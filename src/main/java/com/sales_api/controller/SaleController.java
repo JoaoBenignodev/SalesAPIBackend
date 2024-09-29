@@ -23,7 +23,7 @@ public class SaleController {
         return saleService.save(saleRequestDto);
     }
 
-    @GetMapping("/{id/") ////http://localhost:8080/api/sales/x/
+    @GetMapping("/{id}/") ////http://localhost:8080/api/sales/x/
     public SaleResponseDto getSale(@PathVariable Long id) {
         return saleService.getSale(id);
     }
@@ -36,7 +36,7 @@ public class SaleController {
         return saleService.updateSale(id, saleRequestDto);
     }
 
-    @DeleteMapping("/{id{/delete/") // http://localhost:8080/api/sales/x/delete/
+    @DeleteMapping("/{id}/delete/") // http://localhost:8080/api/sales/x/delete/
     public  SaleResponseDto deleteSale(
             @PathVariable Long id) {
         return saleService.deleteSale(id);
