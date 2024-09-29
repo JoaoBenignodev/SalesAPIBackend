@@ -29,24 +29,35 @@ public class SaleServiceImpl implements SaleServiceInterface {
     // POST method implementation
     @Override
     public SaleResponseDto save(SaleRequestDto saleRequestDto) {
-        Sale sale = new Sale();
-
-        sale.setQuantity(saleRequestDto.getQuantity());
-        sale.setPrice(saleRequestDto.getPrice());
-
         // Fetching the User entity based on the given "user_id"
         User user = userRepository.findById(saleRequestDto.getUser_id()).orElseThrow(()
                 -> new RuntimeException("The given \"user_id\":" + saleRequestDto.getUser_id() +
-                ", is not related to an existing user!"));
-        sale.setUser(user);
+                ", is not related to an existing User!"));
+
 
         // Fetching the Product entity based on the given " product_id"
         Product product = productRepository.findById(saleRequestDto.getProduct_id()).orElseThrow(()
                 -> new RuntimeException("The given \"product_id\":" + saleRequestDto.getProduct_id() +
                 ", is not related to an existing Product!"));
+
+        // Validation of the given "quantity" on top of Product.quantity
+        if (product.getQuantity() < saleRequestDto.getQuantity()) {
+            throw new RuntimeException("The product related to the sale doesn't have enough stock!\n" +
+                "The actual stock of: " + product.getName() + " is " + product.getQuantity() + "units.");
+        }
+
+        // Saving the Sale with the given validated data
+        Sale sale = new Sale();
+        sale.setQuantity(saleRequestDto.getQuantity());
+        sale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
+        sale.setUser(user);
         sale.setProduct(product);
 
         Sale savedSale = saleRepository.save(sale);
+
+        // Update Product.quantity upon Sale registering and given "quantity"
+        product.setQuantity(product.getQuantity() - sale.getQuantity());
+        productRepository.save(product);
 
         SaleResponseDto saleResponseDto = new SaleResponseDto();
         saleResponseDto.setId(savedSale.getId());
@@ -85,19 +96,30 @@ public class SaleServiceImpl implements SaleServiceInterface {
         // Fetching the User entity based on the given "user_id"
         User user = userRepository.findById(saleRequestDto.getUser_id()).orElseThrow(()
                 -> new RuntimeException("The given \"user_id\":" + saleRequestDto.getUser_id() +
-                ", is not related to an existing user!"));
+                ", is not related to an existing User!"));
 
         // Fetching the Product entity based on the given " product_id"
         Product product = productRepository.findById(saleRequestDto.getProduct_id()).orElseThrow(()
                 -> new RuntimeException("The given \"product_id\":" + saleRequestDto.getProduct_id() +
                 ", is not related to an existing Product!"));
 
+        // Validation of the given "quantity" on top of Product.quantity
+        if (product.getQuantity() < saleRequestDto.getQuantity()) {
+            throw new RuntimeException("The product related to the sale doesn't have enough stock!\n" +
+                    "The actual stock of: " + product.getName() + " is: " + product.getQuantity() + " units.");
+        }
+
+        // Updating the Sale with the given validated data
         existingSale.setQuantity(saleRequestDto.getQuantity());
-        existingSale.setPrice(saleRequestDto.getPrice());
+        existingSale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
         existingSale.setUser(user);
         existingSale.setProduct(product);
 
         saleRepository.save(existingSale);
+
+        // Update Product.quantity upon Sale update and given "quantity"
+        product.setQuantity(product.getQuantity() - saleRequestDto.getQuantity());
+        productRepository.save(product);
 
         SaleResponseDto saleResponseDto = new SaleResponseDto();
         saleResponseDto.setId(existingSale.getId());
