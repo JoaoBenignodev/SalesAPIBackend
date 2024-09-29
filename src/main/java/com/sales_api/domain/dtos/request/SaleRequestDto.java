@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SaleRequestDto {
     private Integer quantity;
-    private Double price;
     private Long user_id;
     private Long product_id;
 }
