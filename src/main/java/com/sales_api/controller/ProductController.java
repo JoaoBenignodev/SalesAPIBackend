@@ -6,6 +6,8 @@ import com.sales_api.domain.service.ProductServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products/")
 public class ProductController {
@@ -27,6 +29,11 @@ public class ProductController {
     public ProductResponseDto getProduct(
             @PathVariable Long id) {
         return productService.getProduct(id);
+    }
+
+    @GetMapping // http://localhost:8080/api/products/
+    public List<ProductResponseDto> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @PutMapping("/{id}/change/") // http://localhost:8080/api/products/x/change/
