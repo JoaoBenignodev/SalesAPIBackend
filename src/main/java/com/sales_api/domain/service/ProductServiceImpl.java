@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductServiceInterface {
+
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         // Fetching the User entity based on the given "user_id"
         User user = userRepository.findById(productRequestDto.getUser_id()).orElseThrow(()
                 -> new RuntimeException("The given \"user_id\":" + productRequestDto.getUser_id() +
-                ", is not related to an existing user!"));
+                ", is not related to an existing User!"));
         product.setUser(user);
 
         Product savedProduct = productRepository.save(product);
