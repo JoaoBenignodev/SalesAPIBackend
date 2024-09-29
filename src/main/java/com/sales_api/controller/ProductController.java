@@ -17,19 +17,19 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/add/") //http://localhost:8080/api/products/add/
+    @PostMapping("/add/") // http://localhost:8080/api/products/add/
     public ProductResponseDto save(@RequestBody ProductRequestDto productRequestDto) {
         System.out.println(productRequestDto);
         return productService.save(productRequestDto);
     }
 
-    @GetMapping("/{id}/") //http://localhost:8080/api/products/x/
+    @GetMapping("/{id}/") // http://localhost:8080/api/products/x/
     public ProductResponseDto getProduct(
             @PathVariable Long id) {
         return productService.getProduct(id);
     }
 
-    @PutMapping("/{id}/change/") //http://localhost:8080/api/products/x/change/
+    @PutMapping("/{id}/change/") // http://localhost:8080/api/products/x/change/
     public ProductResponseDto updateProduct(
             @PathVariable Long id,
             @RequestBody ProductRequestDto productRequestDto
@@ -37,7 +37,7 @@ public class ProductController {
         return productService.updateProduct(id, productRequestDto);
     }
 
-    @DeleteMapping("/{id}/delete/") //http://localhost:8080/api/productsx/delete/
+    @DeleteMapping("/{id}/delete/") // http://localhost:8080/api/productsx/delete/
     public ProductResponseDto deleteProduct(
             @PathVariable Long id) {
         return productService.deleteProduct(id);

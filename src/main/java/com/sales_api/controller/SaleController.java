@@ -17,18 +17,18 @@ public class SaleController {
         this.saleService = saleService;
     }
 
-    @PostMapping("/add/") //http://localhost:8080/api/sales/add/
+    @PostMapping("/add/") // http://localhost:8080/api/sales/add/
     public SaleResponseDto save(@RequestBody SaleRequestDto saleRequestDto) {
         System.out.println(saleRequestDto);
         return saleService.save(saleRequestDto);
     }
 
-    @GetMapping("/{id}/") ////http://localhost:8080/api/sales/x/
+    @GetMapping("/{id}/") // http://localhost:8080/api/sales/x/
     public SaleResponseDto getSale(@PathVariable Long id) {
         return saleService.getSale(id);
     }
 
-    @PutMapping(" /{id}/change/") //http://localhost:8080/api/sales/x/change/
+    @PutMapping("/{id}/change/") // http://localhost:8080/api/sales/x/change/
     public  SaleResponseDto updateSale(
             @PathVariable Long id,
             @RequestBody SaleRequestDto saleRequestDto

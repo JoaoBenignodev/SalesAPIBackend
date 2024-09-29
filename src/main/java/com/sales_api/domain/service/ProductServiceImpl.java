@@ -95,6 +95,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         productResponseDto.setId(existingProduct.getId());
         productResponseDto.setName(existingProduct.getName());
         productResponseDto.setQuantity(existingProduct.getQuantity());
+        productResponseDto.setPrice(existingProduct.getPrice());
         productResponseDto.setIs_active(existingProduct.getIsActive());
         productResponseDto.setUser_id(existingProduct.getUser().getId());
 

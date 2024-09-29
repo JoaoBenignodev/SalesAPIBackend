@@ -49,7 +49,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         Sale savedSale = saleRepository.save(sale);
 
         SaleResponseDto saleResponseDto = new SaleResponseDto();
-        sale.setId(savedSale.getId());
+        saleResponseDto.setId(savedSale.getId());
         saleResponseDto.setQuantity(savedSale.getQuantity());
         saleResponseDto.setPrice(savedSale.getPrice());
         saleResponseDto.setUser_id(savedSale.getUser().getId());
