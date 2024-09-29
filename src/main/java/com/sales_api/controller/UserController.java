@@ -2,13 +2,16 @@ package com.sales_api.controller;
 
 import com.sales_api.domain.dtos.request.UserRequestActiveDto;
 import com.sales_api.domain.dtos.request.UserRequestDto;
+import com.sales_api.domain.dtos.response.SaleResponseDto;
 import com.sales_api.domain.dtos.response.UserResponseDto;
 import com.sales_api.domain.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/users/")
 public class UserController {
 
     private final UserServiceInterface userService;
@@ -29,6 +32,12 @@ public class UserController {
             @PathVariable Long id) {
         return userService.getUser(id);
     }
+
+    @GetMapping // http://localhost:8080/api/users/
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
 
     @PutMapping("/{id}/change/") // http://localhost:8080/api/users/x/change/
     public UserResponseDto updateUser(

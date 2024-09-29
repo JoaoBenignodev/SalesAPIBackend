@@ -8,6 +8,8 @@ import com.sales_api.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserServiceInterface {
 
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserServiceInterface {
     // GET method implementation
     @Override
     public UserResponseDto getUser(Long id) {
-        // Looks for an User based on the given "id"
+        // Looks for a User based on the given "id"
         User existingUser = userRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("User not found!\n" +
                 "The given id:" + id + ", is not related to an existing User!"));
@@ -61,10 +63,31 @@ public class UserServiceImpl implements UserServiceInterface {
         return userResponseDto;
     }
 
+    // GET method implementation (for all users)
+    @Override
+    public List<UserResponseDto> getAllUsers() {
+        // Looks for all the Products created on the db
+        List<User> existingUsers = userRepository.findAll();
+        return existingUsers.stream().map(this::convertedDto).toList();
+    }
+
+    // Mapping conversion for the DTO
+    private UserResponseDto convertedDto(User user) {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(user.getId());
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setPassword(user.getPassword());
+        userResponseDto.setDocument(user.getDocument());
+        userResponseDto.setIs_active(user.getIsActive());
+
+        return userResponseDto;
+    }
+
     // PUT method implementation
     @Override
     public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
-        // Looks for an User based on the given "id"
+        // Looks for a User based on the given "id"
         User existingUser = userRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("User not found!\n" +
                 "The given id:" + id + ", is not related to an existing User!"));
@@ -91,7 +114,7 @@ public class UserServiceImpl implements UserServiceInterface {
     // GET method implementation (for status only)
     @Override
     public UserResponseDto updateUserStatus(Long id, UserRequestActiveDto userRequestActiveDto) {
-        // Looks for an User based on the given "id"
+        // Looks for a User based on the given "id"
         User existingUser = userRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("User not found!\n" +
                 "The given id:" + id + ", is not related to an existing User!"));
@@ -114,7 +137,7 @@ public class UserServiceImpl implements UserServiceInterface {
     // DELETE method implementation
     @Override
     public UserResponseDto deleteUser(Long id) {
-        // Looks for an User based on the given "id"
+        // Looks for a User based on the given "id"
         User existingUser = userRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("User not found!\n" +
                 "The given id:" + id + ", is not related to an existing User!"));

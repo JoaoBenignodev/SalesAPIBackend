@@ -6,6 +6,8 @@ import com.sales_api.domain.service.SaleServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/sales/")
 public class SaleController {
@@ -26,6 +28,11 @@ public class SaleController {
     @GetMapping("/{id}/") // http://localhost:8080/api/sales/x/
     public SaleResponseDto getSale(@PathVariable Long id) {
         return saleService.getSale(id);
+    }
+
+    @GetMapping // http://localhost:8080/api/sales/
+    public List<SaleResponseDto> getAllSales() {
+        return saleService.getAllSales();
     }
 
     @PutMapping("/{id}/change/") // http://localhost:8080/api/sales/x/change/

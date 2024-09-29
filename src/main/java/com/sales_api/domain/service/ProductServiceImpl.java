@@ -9,6 +9,8 @@ import com.sales_api.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ProductServiceImpl implements ProductServiceInterface {
@@ -25,17 +27,17 @@ public class ProductServiceImpl implements ProductServiceInterface {
     // POST method implementation
     @Override
     public ProductResponseDto save(ProductRequestDto productRequestDto) {
-        Product product = new Product();
-
-        product.setName(productRequestDto.getName());
-        product.setQuantity(productRequestDto.getQuantity());
-        product.setPrice(productRequestDto.getPrice());
-        product.setIsActive(productRequestDto.getIs_active());
-
         // Fetching the User entity based on the given "user_id"
         User user = userRepository.findById(productRequestDto.getUser_id()).orElseThrow(()
                 -> new RuntimeException("The given \"user_id\":" + productRequestDto.getUser_id() +
                 ", is not related to an existing User!"));
+
+        // Saving the Product with the given validated data
+        Product product = new Product();
+        product.setName(productRequestDto.getName());
+        product.setQuantity(productRequestDto.getQuantity());
+        product.setPrice(productRequestDto.getPrice());
+        product.setIsActive(productRequestDto.getIs_active());
         product.setUser(user);
 
         Product savedProduct = productRepository.save(product);
@@ -70,6 +72,27 @@ public class ProductServiceImpl implements ProductServiceInterface {
         return productResponseDto;
     }
 
+    // GET method implementation (for all products)
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        // Looks for all the Products created on the db
+        List<Product> existingProducts = productRepository.findAll();
+        return existingProducts.stream().map(this::convertedDto).toList();
+    }
+
+    // Mapping conversion for the DTO
+    private ProductResponseDto convertedDto(Product product) {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(product.getId());
+        productResponseDto.setName(product.getName());
+        productResponseDto.setQuantity(product.getQuantity());
+        productResponseDto.setPrice(product.getPrice());
+        productResponseDto.setIs_active(product.getIsActive());
+        productResponseDto.setUser_id(product.getUser().getId());
+
+        return productResponseDto;
+    }
+
     // PUT method implementation
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
@@ -83,6 +106,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
                 -> new RuntimeException("The given \"user_id\":" + productRequestDto.getUser_id() +
                 ", is not related to an existing User!"));
 
+        // Updating the Product with the given validated data
         existingProduct.setName(productRequestDto.getName());
         existingProduct.setQuantity(productRequestDto.getQuantity());
         existingProduct.setPrice(productRequestDto.getPrice());

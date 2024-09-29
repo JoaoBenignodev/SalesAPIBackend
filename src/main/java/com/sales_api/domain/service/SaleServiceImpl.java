@@ -11,6 +11,8 @@ import com.sales_api.domain.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SaleServiceImpl implements SaleServiceInterface {
 
@@ -82,6 +84,26 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setPrice(existingSale.getPrice());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());
+
+        return saleResponseDto;
+    }
+
+    // GET method implementation (for all sales)
+    @Override
+    public List<SaleResponseDto> getAllSales() {
+        // Looks for all the Products created on the db
+        List<Sale> existingSales = saleRepository.findAll();
+        return existingSales.stream().map(this::convertedDto).toList();
+    }
+
+    // Mapping conversion for the DTO
+    private SaleResponseDto convertedDto(Sale sale) {
+        SaleResponseDto saleResponseDto = new SaleResponseDto();
+        saleResponseDto.setId(sale.getId());
+        saleResponseDto.setQuantity(sale.getQuantity());
+        saleResponseDto.setPrice(sale.getPrice());
+        saleResponseDto.setUser_id(sale.getUser().getId());
+        saleResponseDto.setProduct_id(sale.getProduct().getId());
 
         return saleResponseDto;
     }
