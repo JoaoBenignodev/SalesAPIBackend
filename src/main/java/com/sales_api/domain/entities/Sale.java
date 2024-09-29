@@ -1,6 +1,5 @@
 package com.sales_api.domain.entities;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
