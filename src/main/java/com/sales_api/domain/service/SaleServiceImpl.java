@@ -155,10 +155,17 @@ public class SaleServiceImpl implements SaleServiceInterface {
 
     //DELETE method implementation
     public SaleResponseDto deleteSale(Long id) {
-        // Looks for a Sale based on the give "id"
+        // Looks for a Sale based on the given "id"
         Sale existingSale = saleRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("Sale not found!\n" +
                 "The given id:" + id + ", is not related to an existing Sale!"));
+
+        // Fetching the product based on the existingSale "product_id"
+        Product product = existingSale.getProduct();
+
+        // Update Product.quantity upon a Sale deletion and its quantity
+        product.setQuantity(product.getQuantity() + existingSale.getQuantity());
+        productRepository.save(product);
 
         saleRepository.delete(existingSale);
 
