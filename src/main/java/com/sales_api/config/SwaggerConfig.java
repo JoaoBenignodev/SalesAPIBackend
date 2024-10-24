@@ -15,7 +15,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Sales-API demo")
                         .version(" 1.0.0")
-                        .description("Demo API for handling sales operations between Users, Products ans Sales")
+                        .description("Demo API for handling sales operations between Users, Products and Sales")
                         .license(new License()
                                 .name("Project GitHub repository")
                                 .url("https://github.com/JoaoBenignodev/SalesAPIBackend")));
