@@ -2,6 +2,7 @@ package com.sales_api.controller;
 
 import com.sales_api.domain.dtos.request.UserRequestActiveDto;
 import com.sales_api.domain.dtos.request.UserRequestDto;
+import com.sales_api.domain.dtos.request.UserRequestUpdateDto;
 import com.sales_api.domain.dtos.response.SaleResponseDto;
 import com.sales_api.domain.dtos.response.UserResponseDto;
 import com.sales_api.domain.service.UserServiceInterface;
@@ -43,9 +44,9 @@ public class UserController {
     @PutMapping("/{id}/change/") // http://localhost:8080/api/users/x/change/
     public UserResponseDto updateUser(
             @PathVariable Long id,
-            @RequestBody UserRequestDto userRequestDto
+            @RequestBody UserRequestUpdateDto userRequestUpdateDto
     ) {
-        return userService.updateUser(id, userRequestDto);
+        return userService.updateUser(id, userRequestUpdateDto);
     }
 
     @PutMapping("/{id}/changestatus/") // http://localhost:8080/api/users/x/changestatus/
