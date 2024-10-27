@@ -3,6 +3,7 @@ package com.sales_api.domain.service;
 import com.sales_api.Infrastructure.repository.UserRepository;
 import com.sales_api.domain.dtos.request.UserRequestActiveDto;
 import com.sales_api.domain.dtos.request.UserRequestDto;
+import com.sales_api.domain.dtos.request.UserRequestUpdateDto;
 import com.sales_api.domain.dtos.response.UserResponseDto;
 import com.sales_api.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,17 +87,16 @@ public class UserServiceImpl implements UserServiceInterface {
 
     // PUT method implementation
     @Override
-    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+    public UserResponseDto updateUser(Long id, UserRequestUpdateDto userRequestUpdateDto) {
         // Looks for a User based on the given "id"
         User existingUser = userRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("User not found!\n" +
                 "The given id:" + id + ", is not related to an existing User!"));
 
-        existingUser.setName(userRequestDto.getName());
-        existingUser.setEmail(userRequestDto.getEmail());
-        existingUser.setPassword(userRequestDto.getPassword());
-        existingUser.setDocument(userRequestDto.getDocument());
-        existingUser.setIsActive(userRequestDto.getIs_active());
+        existingUser.setName(userRequestUpdateDto.getName());
+        existingUser.setEmail(userRequestUpdateDto.getEmail());
+        existingUser.setDocument(userRequestUpdateDto.getDocument());
+        existingUser.setIsActive(userRequestUpdateDto.getIs_active());
 
         userRepository.save(existingUser);
 
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserServiceInterface {
         return userResponseDto;
     }
 
-    // GET method implementation (for status only)
+    // PUT method implementation (for status only)
     @Override
     public UserResponseDto updateUserStatus(Long id, UserRequestActiveDto userRequestActiveDto) {
         // Looks for a User based on the given "id"
