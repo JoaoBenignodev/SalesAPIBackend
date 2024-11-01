@@ -15,7 +15,7 @@ After opening the project, execute the project file `ApiApplication.java`
 </br>
 Done! Now, the backend of the Sales-API application is running locally, on your machine.
 </br>
-For testing the API methods you can use the project's **Swagger Documentation**, by accessing this [link](http://localhost:8080/sales-api/swagger-ui/index.html)
+For testing the API methods you can use the project's **Swagger Documentation**, by accessing this [link](http://localhost:8080/sales-api/swagger-ui/index.html).
 > [!NOTE]
 > In the project, the development team uses for delving and debugging the **IntelliJ IDEA** IDE. To download it, access the [Jetbrains official page](https://www.jetbrains.com/idea/).
 ### Accessing the Database:
