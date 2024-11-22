@@ -9,6 +9,8 @@ public class SaleResponseDto {
     private Long id;
     private Integer quantity;
     private Double price;
-    private Long user_id;
-    private Long product_id;
+    private Long user_id; // User.id from the ./entities/User.java
+    private String user_name; // User.name from the ./entities/User.java
+    private Long product_id; // Product.id from the ./entities/Product.java
+    private String product_name; // Product.name from the ./entities/Product.java
 }

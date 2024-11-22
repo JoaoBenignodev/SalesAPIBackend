@@ -49,6 +49,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         productResponseDto.setPrice(savedProduct.getPrice());
         productResponseDto.setIs_active(savedProduct.getIsActive());
         productResponseDto.setUser_id(savedProduct.getUser().getId());
+        productResponseDto.setUser_name(savedProduct.getUser().getName());
 
         return productResponseDto;
     }
@@ -68,6 +69,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         productResponseDto.setPrice(existingProduct.getPrice());
         productResponseDto.setIs_active(existingProduct.getIsActive());
         productResponseDto.setUser_id(existingProduct.getUser().getId());
+        productResponseDto.setUser_name(existingProduct.getUser().getName());
 
         return productResponseDto;
     }
@@ -89,6 +91,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         productResponseDto.setPrice(product.getPrice());
         productResponseDto.setIs_active(product.getIsActive());
         productResponseDto.setUser_id(product.getUser().getId());
+        productResponseDto.setUser_name(product.getUser().getName());
 
         return productResponseDto;
     }
@@ -122,6 +125,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         productResponseDto.setPrice(existingProduct.getPrice());
         productResponseDto.setIs_active(existingProduct.getIsActive());
         productResponseDto.setUser_id(existingProduct.getUser().getId());
+        productResponseDto.setUser_name(existingProduct.getUser().getName());
 
         return productResponseDto;
     }
