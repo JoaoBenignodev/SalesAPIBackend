@@ -66,7 +66,9 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setQuantity(savedSale.getQuantity());
         saleResponseDto.setPrice(savedSale.getPrice());
         saleResponseDto.setUser_id(savedSale.getUser().getId());
+        saleResponseDto.setUser_name(savedSale.getUser().getName());
         saleResponseDto.setProduct_id(savedSale.getProduct().getId());
+        saleResponseDto.setProduct_name(savedSale.getProduct().getName());
 
         return saleResponseDto;
     }
@@ -83,7 +85,9 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setQuantity(existingSale.getQuantity());
         saleResponseDto.setPrice(existingSale.getPrice());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
+        saleResponseDto.setUser_name(existingSale.getUser().getName());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());
+        saleResponseDto.setProduct_name(existingSale.getProduct().getName());
 
         return saleResponseDto;
     }
@@ -103,7 +107,9 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setQuantity(sale.getQuantity());
         saleResponseDto.setPrice(sale.getPrice());
         saleResponseDto.setUser_id(sale.getUser().getId());
+        saleResponseDto.setUser_name(sale.getUser().getName());
         saleResponseDto.setProduct_id(sale.getProduct().getId());
+        saleResponseDto.setProduct_name(sale.getProduct().getName());
 
         return saleResponseDto;
     }
@@ -148,7 +154,9 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setQuantity(existingSale.getQuantity());
         saleResponseDto.setPrice(existingSale.getPrice());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
+        saleResponseDto.setUser_name(existingSale.getUser().getName());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());
+        saleResponseDto.setProduct_name(existingSale.getProduct().getName());
 
         return saleResponseDto;
     }
