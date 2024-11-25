@@ -3,7 +3,7 @@
 The instructions below are going to let you locally run a copy of the project, on your own machine.
 ### Clone the repository:
 ```bash
-git clone https://github.com/JoaoBenignodev/SalesAPI-ADS4a.git
+git clone https://github.com/JoaoBenignodev/SalesAPIBackend.git
 ```
 > [!TIP]
 > To run `git` commands in your system, you'll need to have **git** installed. For that, access [Git's official page](https://git-scm.com/).
