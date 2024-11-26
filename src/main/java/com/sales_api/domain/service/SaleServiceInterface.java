@@ -10,6 +10,8 @@ public interface SaleServiceInterface {
     SaleResponseDto save(SaleRequestDto saleRequestDto);
     SaleResponseDto getSale(Long id);
     List<SaleResponseDto> getAllSales();
+    List<SaleResponseDto> getAllActiveSales();
+    List<SaleResponseDto> getAllInactiveSales();
     SaleResponseDto updateSale(Long id, UpdateSaleRequestDto saleRequestDto);
     SaleResponseDto deleteSale(Long id);
 }
