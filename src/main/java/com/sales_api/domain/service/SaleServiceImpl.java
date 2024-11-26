@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SaleServiceImpl implements SaleServiceInterface {
@@ -119,6 +120,56 @@ public class SaleServiceImpl implements SaleServiceInterface {
         return saleResponseDto;
     }
 
+    // GET method implementation (for all active sales)
+    @Override
+    public List<SaleResponseDto> getAllActiveSales() {
+        // Looks for all the Products created on the db
+        List<Sale> existingSales = saleRepository.findAll();
+        return existingSales.stream().filter(Sale::getIsActive)
+                .map(this::convertedOnlyActiveDto)
+                .collect(Collectors.toList());
+    }
+
+    // Mapping conversion for the DTO
+    private SaleResponseDto convertedOnlyActiveDto(Sale sale) {
+        SaleResponseDto saleResponseDto = new SaleResponseDto();
+        saleResponseDto.setId(sale.getId());
+        saleResponseDto.setQuantity(sale.getQuantity());
+        saleResponseDto.setPrice(sale.getPrice());
+        saleResponseDto.setIs_active(sale.getIsActive());
+        saleResponseDto.setUser_id(sale.getUser().getId());
+        saleResponseDto.setUser_name(sale.getUser().getName());
+        saleResponseDto.setProduct_id(sale.getProduct().getId());
+        saleResponseDto.setProduct_name(sale.getProduct().getName());
+
+        return saleResponseDto;
+    }
+
+    // GET method implementation (for all inactive sales)
+    @Override
+    public List<SaleResponseDto> getAllInactiveSales() {
+        // Looks for all the Products created on the db
+        List<Sale> existingSales = saleRepository.findAll();
+        return existingSales.stream().filter(sale -> !sale.getIsActive())
+                .map(this::convertedOnlyInactiveDto)
+                .collect(Collectors.toList());
+    }
+
+    // Mapping conversion for the DTO
+    private SaleResponseDto convertedOnlyInactiveDto(Sale sale) {
+        SaleResponseDto saleResponseDto = new SaleResponseDto();
+        saleResponseDto.setId(sale.getId());
+        saleResponseDto.setQuantity(sale.getQuantity());
+        saleResponseDto.setPrice(sale.getPrice());
+        saleResponseDto.setIs_active(sale.getIsActive());
+        saleResponseDto.setUser_id(sale.getUser().getId());
+        saleResponseDto.setUser_name(sale.getUser().getName());
+        saleResponseDto.setProduct_id(sale.getProduct().getId());
+        saleResponseDto.setProduct_name(sale.getProduct().getName());
+
+        return saleResponseDto;
+    }
+
     // PUT method implementation
     public SaleResponseDto updateSale(Long id, UpdateSaleRequestDto updateSaleRequestDto) {
         // Looks for a Sale based on the give "id"
@@ -132,12 +183,19 @@ public class SaleServiceImpl implements SaleServiceInterface {
                     " is not active!\n" + "Sales that are inactive cannot be altered.");
         }
 
+        // Validates if the given Sale is being inactivated
+        if (updateSaleRequestDto.getIs_active()) {
+            throw new RuntimeException("The Sale with id: " + existingSale.getId() +
+                    " is already active!\n" + "Only inactivations can be done through update.");
+        }
+
+
         // Fetching the Product entity based on the product linked with the sale
         Product product = existingSale.getProduct();
 
         // Updating the Sale with the given validated data
-        existingSale.setIsActive(updateSaleRequestDto.getIs_active());
 
+        existingSale.setIsActive(false);
         saleRepository.save(existingSale);
 
         // Update Product.quantity upon Sale update and given "quantity"

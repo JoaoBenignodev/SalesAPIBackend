@@ -37,6 +37,16 @@ public class SaleController {
         return saleService.getAllSales();
     }
 
+    @GetMapping("/active/") // http://localhost:8080/api/sales/active/
+    public List<SaleResponseDto> getAllActiveSales() {
+        return saleService.getAllActiveSales();
+    }
+
+    @GetMapping("/inactive/") // http://localhost:8080/api/sales/inactive/
+    public List<SaleResponseDto> getAllInactiveSales() {
+        return saleService.getAllInactiveSales();
+    }
+
     @PutMapping("/{id}/change/") // http://localhost:8080/api/sales/x/change/
     public  SaleResponseDto updateSale(
             @PathVariable Long id,
