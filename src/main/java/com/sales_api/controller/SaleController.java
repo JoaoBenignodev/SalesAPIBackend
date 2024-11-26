@@ -44,6 +44,14 @@ public class SaleController {
         return saleService.updateSale(id, saleRequestDto);
     }
 
+    @PutMapping("/{id}/is_active/change/") // http://localhost:8080/api/sales/x/change/
+    public  SaleResponseDto updateSaleIsActive(
+            @PathVariable Long id,
+            @RequestBody SaleRequestDto saleRequestDto
+    ) {
+        return saleService.updateSale(id, saleRequestDto);
+    }
+
     @DeleteMapping("/{id}/delete/") // http://localhost:8080/api/sales/x/delete/
     public  SaleResponseDto deleteSale(
             @PathVariable Long id) {

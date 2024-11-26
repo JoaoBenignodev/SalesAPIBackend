@@ -3,6 +3,7 @@ package com.sales_api.domain.service;
 import com.sales_api.Infrastructure.repository.SaleRepository;
 import com.sales_api.Infrastructure.repository.UserRepository;
 import com.sales_api.Infrastructure.repository.ProductRepository;
+import com.sales_api.domain.dtos.request.SaleRequestActiveDto;
 import com.sales_api.domain.dtos.request.SaleRequestDto;
 import com.sales_api.domain.dtos.response.SaleResponseDto;
 import com.sales_api.domain.entities.Sale;
@@ -52,6 +53,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         Sale sale = new Sale();
         sale.setQuantity(saleRequestDto.getQuantity());
         sale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
+        sale.setIs_active(saleRequestDto.getIs_active());
         sale.setUser(user);
         sale.setProduct(product);
 
@@ -65,6 +67,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setId(savedSale.getId());
         saleResponseDto.setQuantity(savedSale.getQuantity());
         saleResponseDto.setPrice(savedSale.getPrice());
+        saleResponseDto.setIs_active(savedSale.getIs_active());
         saleResponseDto.setUser_id(savedSale.getUser().getId());
         saleResponseDto.setUser_name(savedSale.getUser().getName());
         saleResponseDto.setProduct_id(savedSale.getProduct().getId());
@@ -84,6 +87,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setId(existingSale.getId());
         saleResponseDto.setQuantity(existingSale.getQuantity());
         saleResponseDto.setPrice(existingSale.getPrice());
+        saleResponseDto.setIs_active(existingSale.getIs_active());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
         saleResponseDto.setUser_name(existingSale.getUser().getName());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());
@@ -106,6 +110,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setId(sale.getId());
         saleResponseDto.setQuantity(sale.getQuantity());
         saleResponseDto.setPrice(sale.getPrice());
+        saleResponseDto.setIs_active(sale.getIs_active());
         saleResponseDto.setUser_id(sale.getUser().getId());
         saleResponseDto.setUser_name(sale.getUser().getName());
         saleResponseDto.setProduct_id(sale.getProduct().getId());
@@ -160,6 +165,35 @@ public class SaleServiceImpl implements SaleServiceInterface {
 
         return saleResponseDto;
     }
+
+    // PUT Is Active [method implementation
+    @Override
+    public SaleResponseDto updateSaleIsActive(Long id, SaleRequestActiveDto saleRequestActiveDto) {
+
+        // Looks for a Sale based on the give "id"
+        Sale existingSale = saleRepository.findById(id).orElseThrow(()
+                -> new RuntimeException("Sale not found!\n" +
+                "The given id:" + id + ", is not related to an existing Sale!"));
+
+        // Updating the Sale with the given validated data
+        existingSale.setIs_active(saleRequestActiveDto.getIs_active());
+
+        saleRepository.save(existingSale);
+
+        if (existingSale.getIs_active() == false) {
+            existingSale.getProduct().setQuantity(existingSale.getProduct().getQuantity() + existingSale.getQuantity());
+            productRepository.save(existingSale.getProduct());
+        }
+
+
+        SaleResponseDto saleResponseDto = new SaleResponseDto();
+        saleResponseDto.setIs_active(existingSale.getIs_active());
+
+        return saleResponseDto;
+    }
+
+
+
 
     //DELETE method implementation
     public SaleResponseDto deleteSale(Long id) {
