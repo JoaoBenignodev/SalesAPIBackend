@@ -5,9 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SaleRequestDto {
-    private Integer quantity;
+public class UpdateSaleRequestDto {
     private Boolean is_active;
-    private Long user_id;
-    private Long product_id;
 }

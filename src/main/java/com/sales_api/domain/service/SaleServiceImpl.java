@@ -4,6 +4,7 @@ import com.sales_api.Infrastructure.repository.SaleRepository;
 import com.sales_api.Infrastructure.repository.UserRepository;
 import com.sales_api.Infrastructure.repository.ProductRepository;
 import com.sales_api.domain.dtos.request.SaleRequestDto;
+import com.sales_api.domain.dtos.request.UpdateSaleRequestDto;
 import com.sales_api.domain.dtos.response.SaleResponseDto;
 import com.sales_api.domain.entities.Sale;
 import com.sales_api.domain.entities.User;
@@ -51,6 +52,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         // Saving the Sale with the given validated data
         Sale sale = new Sale();
         sale.setQuantity(saleRequestDto.getQuantity());
+        sale.setIsActive(saleRequestDto.getIs_active());
         sale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
         sale.setUser(user);
         sale.setProduct(product);
@@ -64,6 +66,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         SaleResponseDto saleResponseDto = new SaleResponseDto();
         saleResponseDto.setId(savedSale.getId());
         saleResponseDto.setQuantity(savedSale.getQuantity());
+        saleResponseDto.setIs_active(savedSale.getIsActive());
         saleResponseDto.setPrice(savedSale.getPrice());
         saleResponseDto.setUser_id(savedSale.getUser().getId());
         saleResponseDto.setUser_name(savedSale.getUser().getName());
@@ -84,6 +87,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setId(existingSale.getId());
         saleResponseDto.setQuantity(existingSale.getQuantity());
         saleResponseDto.setPrice(existingSale.getPrice());
+        saleResponseDto.setIs_active(existingSale.getIsActive());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
         saleResponseDto.setUser_name(existingSale.getUser().getName());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());
@@ -106,6 +110,7 @@ public class SaleServiceImpl implements SaleServiceInterface {
         saleResponseDto.setId(sale.getId());
         saleResponseDto.setQuantity(sale.getQuantity());
         saleResponseDto.setPrice(sale.getPrice());
+        saleResponseDto.setIs_active(sale.getIsActive());
         saleResponseDto.setUser_id(sale.getUser().getId());
         saleResponseDto.setUser_name(sale.getUser().getName());
         saleResponseDto.setProduct_id(sale.getProduct().getId());
@@ -115,44 +120,35 @@ public class SaleServiceImpl implements SaleServiceInterface {
     }
 
     // PUT method implementation
-    public SaleResponseDto updateSale(Long id, SaleRequestDto saleRequestDto) {
+    public SaleResponseDto updateSale(Long id, UpdateSaleRequestDto updateSaleRequestDto) {
         // Looks for a Sale based on the give "id"
         Sale existingSale = saleRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("Sale not found!\n" +
                 "The given id:" + id + ", is not related to an existing Sale!"));
 
-        // Fetching the User entity based on the given "user_id"
-        User user = userRepository.findById(saleRequestDto.getUser_id()).orElseThrow(()
-                -> new RuntimeException("The given \"user_id\":" + saleRequestDto.getUser_id() +
-                ", is not related to an existing User!"));
-
-        // Fetching the Product entity based on the given " product_id"
-        Product product = productRepository.findById(saleRequestDto.getProduct_id()).orElseThrow(()
-                -> new RuntimeException("The given \"product_id\":" + saleRequestDto.getProduct_id() +
-                ", is not related to an existing Product!"));
-
-        // Validation of the given "quantity" on top of Product.quantity
-        if (product.getQuantity() < saleRequestDto.getQuantity()) {
-            throw new RuntimeException("The product related to the sale doesn't have enough stock!\n" +
-                    "The actual stock of: " + product.getName() + " is: " + product.getQuantity() + " units.");
+        // Validates if the given Sale is inactive
+        if (!existingSale.getIsActive()) {
+            throw new RuntimeException("The Sale with id: " + existingSale.getId() +
+                    " is not active!\n" + "Sales that are inactive cannot be altered.");
         }
 
+        // Fetching the Product entity based on the product linked with the sale
+        Product product = existingSale.getProduct();
+
         // Updating the Sale with the given validated data
-        existingSale.setQuantity(saleRequestDto.getQuantity());
-        existingSale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
-        existingSale.setUser(user);
-        existingSale.setProduct(product);
+        existingSale.setIsActive(updateSaleRequestDto.getIs_active());
 
         saleRepository.save(existingSale);
 
         // Update Product.quantity upon Sale update and given "quantity"
-        product.setQuantity(product.getQuantity() - saleRequestDto.getQuantity());
+        product.setQuantity(product.getQuantity() + existingSale.getQuantity());
         productRepository.save(product);
 
         SaleResponseDto saleResponseDto = new SaleResponseDto();
         saleResponseDto.setId(existingSale.getId());
         saleResponseDto.setQuantity(existingSale.getQuantity());
         saleResponseDto.setPrice(existingSale.getPrice());
+        saleResponseDto.setIs_active(existingSale.getIsActive());
         saleResponseDto.setUser_id(existingSale.getUser().getId());
         saleResponseDto.setUser_name(existingSale.getUser().getName());
         saleResponseDto.setProduct_id(existingSale.getProduct().getId());

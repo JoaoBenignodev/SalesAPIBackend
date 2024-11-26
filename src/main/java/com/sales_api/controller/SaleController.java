@@ -1,6 +1,7 @@
 package com.sales_api.controller;
 
 import com.sales_api.domain.dtos.request.SaleRequestDto;
+import com.sales_api.domain.dtos.request.UpdateSaleRequestDto;
 import com.sales_api.domain.dtos.response.SaleResponseDto;
 import com.sales_api.domain.service.SaleServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class SaleController {
     @PutMapping("/{id}/change/") // http://localhost:8080/api/sales/x/change/
     public  SaleResponseDto updateSale(
             @PathVariable Long id,
-            @RequestBody SaleRequestDto saleRequestDto
+            @RequestBody UpdateSaleRequestDto updateSaleRequestDto
     ) {
-        return saleService.updateSale(id, saleRequestDto);
+        return saleService.updateSale(id, updateSaleRequestDto);
     }
 
     @DeleteMapping("/{id}/delete/") // http://localhost:8080/api/sales/x/delete/

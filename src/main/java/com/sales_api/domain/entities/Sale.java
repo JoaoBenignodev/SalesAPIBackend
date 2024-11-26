@@ -22,6 +22,9 @@ public class Sale {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
