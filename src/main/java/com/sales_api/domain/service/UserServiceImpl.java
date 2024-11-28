@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserServiceInterface {
     // GET method implementation (for all users)
     @Override
     public List<UserResponseDto> getAllUsers() {
-        // Looks for all the Products created on the db
+        // Looks for all the Users created on the db
         List<User> existingUsers = userRepository.findAll();
         return existingUsers.stream().map(this::convertedDto).toList();
     }
